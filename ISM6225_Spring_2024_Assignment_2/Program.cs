@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace Assignment_2
 {
@@ -58,6 +59,7 @@ namespace Assignment_2
         }
 
         // Question 1: Find Missing Numbers in Array
+        // Edge case: if nums is null or empty, return empty list
         public static IList<int> FindMissingNumbers(int[] nums)
         {
             try
@@ -65,12 +67,14 @@ namespace Assignment_2
                 if (nums == null || nums.Length == 0)
                     return new List<int>(); // Placeholder
                 
+                // Mark visited numbers as negative
                 for (int i=0; i<nums.Length; i++){
                     int index = Math.Abs(nums[i]) - 1; 
                     if (nums[index] > 0){
                         nums[index] = -nums[index]; 
                     }
                 }
+                // Any index that remains positive means the number (index + 1) is missing
                 List<int> result = new List<int>();
                 for (int i = 0; i < nums.Length; i++){
                     if (nums[i] > 0){
@@ -86,10 +90,13 @@ namespace Assignment_2
         }
 
         // Question 2: Sort Array by Parity
+        // Edge Case: Return empty array if input is null or empty
         public static int[] SortArrayByParity(int[] nums)
     {
     try
     {
+        if (nums == null || nums.Length == 0)
+            return new int[0];
         int n = nums.Length;
         int insertPos = 0;
 
@@ -115,13 +122,13 @@ namespace Assignment_2
         throw;
     }
 }
-
-
         // Question 3: Two Sum
+        // Edge Cases Handeled: No valid pair → returns empty array Multiple pairs → returns first valid pair
         public static int[] TwoSum(int[] nums, int target)
         {
             try
             {
+                // Dictionary to store the number and its index
                 Dictionary<int, int> map = new Dictionary<int, int>();
                 for (int i = 0; i < nums.Length; i++)
                 {
@@ -130,11 +137,13 @@ namespace Assignment_2
                     {
                         return new int[] { map[complement], i };
                     }
-                    if (!map.ContainsKey(nums[i]))
+                    // Add current number to map
+                    if (!map.ContainsKey(nums[i])) // To handle duplicates properly
                     {
                         map[nums[i]] = i;
                     }
                 }
+                // If no solution is found
                 return new int[0]; // Placeholder
             }
             catch (Exception)
@@ -143,6 +152,7 @@ namespace Assignment_2
             }
         }
         // Question 4: Find Maximum Product of Three Numbers
+        // Edge Cases Handeled: Arrays with negative values/ Arrays where minimum values could lead to a larger positive product
         public static int MaximumProduct(int[] nums)
         {
             try
@@ -150,9 +160,10 @@ namespace Assignment_2
                 Array.Sort(nums); // Sort the array
 
                 int n = nums.Length;
-
+                // Product of three largest numbers
                 int product1 = nums[n - 1] * nums[n - 2] * nums[n - 3];
 
+                // Product of two smallest and largest number
                 int product2 = nums[0] * nums[1] * nums[n - 1];
 
                 return Math.Max(product1, product2);
@@ -165,6 +176,7 @@ namespace Assignment_2
         }
 
         // Question 5: Decimal to Binary Conversion
+        // Edge Cases: Return 0 if the decimal number is 0
         public static string DecimalToBinary(int decimalNumber)
         {
             try
@@ -172,6 +184,7 @@ namespace Assignment_2
                 if(decimalNumber == 0)
                     return "0";
                 
+                // To Convert Decimal to Binary
                 string binary = "";
                 while (decimalNumber > 0)
                 {
@@ -201,10 +214,12 @@ namespace Assignment_2
 
                     if (nums[mid] > nums[right])
                     {
+                        // The min is to the right of mid
                         left = mid + 1;
                     }
                     else
                     {
+                        // The min is at mid or to the left of mid
                         right = mid;
                     }
                 }
@@ -222,6 +237,7 @@ namespace Assignment_2
         {
             try
             {
+                // Edges Cases if the number is less than 0
                 if (x < 0 || (x % 10 == 0 && x != 0))
                     return false; 
                 
